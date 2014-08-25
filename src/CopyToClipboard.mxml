@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="utf-8"?>
+<s:Application xmlns:fx="http://ns.adobe.com/mxml/2009"
+			   xmlns:s="library://ns.adobe.com/flex/spark"
+			   
+			   maxHeight="22" maxWidth="61" 
+			   width="61" height="22">
+	
+	<fx:Script>
+		<![CDATA[
+			import flash.desktop.Clipboard;
+			import flash.desktop.ClipboardFormats;
+			
+			import mx.controls.Alert;
+			import mx.core.FlexGlobals;
+			
+			
+			protected function onClick(event:MouseEvent):void
+			{
+				var textToCopy:String = FlexGlobals.topLevelApplication.parameters.textToCopy;
+				var openInNewTab:String = FlexGlobals.topLevelApplication.parameters.openInNewTab;
+				copyToClipboard(textToCopy);
+				if(openInNewTab.toUpperCase()=="TRUE"){
+					openInNewBrowserTab(textToCopy);
+				}
+			}
+			
+			private function copyToClipboard(textToCopy:String):void
+			{
+				Clipboard.generalClipboard.clear();
+				Clipboard.generalClipboard.setData(ClipboardFormats.TEXT_FORMAT, textToCopy, false);
+			}
+			
+			private function openInNewBrowserTab(url:String):void
+			{
+				var linkToNavigate:URLRequest = new URLRequest(url);
+				navigateToURL(linkToNavigate,"_blank");
+			}
+			
+			
+			
+		]]>
+	</fx:Script>
+	
+	<s:Image id="copyBtn" smooth="true" 
+			 width="61" height="22" buttonMode="true"
+			 source="@Embed('assets/copy-button.png')"
+			 mouseOver="{copyBtnHover.visible = true}"
+			 click="onClick(event)"
+			 />
+	<s:Image id="copyBtnHover" smooth="true"  visible="false"
+			 width="61" height="22" buttonMode="true"
+			 source="@Embed('assets/copy-button-hover.png')"
+			 mouseOut="{copyBtnHover.visible = false}"
+			 click="onClick(event)"
+			 />
+	
+</s:Application>
